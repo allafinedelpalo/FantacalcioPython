@@ -6,10 +6,23 @@ from collections import Counter
 class Costanti:
 	"""Classe di utility con tutte le costanti per il progetto"""
 	
+	def genera_girone_segnaposti(squadre):
+		"""Implementazione python dell'algoritmo 'round-robin tournament'
+		http://stackoverflow.com/questions/11245746/league-fixture-generator-in-python
+		https://en.wikipedia.org/wiki/Round-robin_tournament"""
+
+		rotation = list(squadre)
+		giornate = []
+		for i in range(0, len(squadre)-1):
+			giornate.append(rotation)
+			rotation = [rotation[0]] + [rotation[-1]] + rotation[1:-1]
+		return giornate
+
 	"""costanti dipendenti dal fantacampionato"""
 	NUM_SQUADRE = 4
 	NUM_GIRONI = 4
 	NUM_GIORNATE = (NUM_SQUADRE - 1) * NUM_GIRONI
+	ULTIMA_GIORNATA = NUM_GIORNATE
 	
 	"""costanti per leggere il file excel"""
 	FIRST_LETTER_ODD = 'A'
@@ -21,10 +34,7 @@ class Costanti:
 	
 	"""calendario con segnaposto per un girone"""
 	SEGNAPOSTI = ['A', 'B', 'C', 'D']
-	CALENDARIO_SEGNAPOSTI = [SEGNAPOSTI
-							,['A', 'C', 'B', 'D']
-							,['D', 'A', 'C', 'B']
-							 ]
+	CALENDARIO_SEGNAPOSTI = genera_girone_segnaposti(SEGNAPOSTI)
 	CALENDARIO_SEGNAPOSTI_COMPLETO = CALENDARIO_SEGNAPOSTI * NUM_GIRONI
 	
 	"""soglie punti-gol"""
@@ -89,7 +99,7 @@ class Calendario:
 			return [sc + "@" + str(self._pti_primo) for sc in self._squadre_campioni]
 
 		
-	def calcola_classifica(self, ultima_giornata=Costanti.NUM_GIORNATE):
+	def calcola_classifica(self, ultima_giornata=Costanti.ULTIMA_GIORNATA):
 		"""Calcola la classifica fino alla giornata numero 'ultima_giornata'
 		per tutte le giornate con flag 'giocata'=True"""
 		for g in self._giornate[:ultima_giornata]:
