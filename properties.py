@@ -1,3 +1,5 @@
+import string
+
 class Costanti:
 	"""Classe che mantiene tutte le proprieta' invariabili del progetto.
 	Le variabili costanti devono essere opportunamente impostate prima di
@@ -31,7 +33,7 @@ class Costanti:
 	
 	# calendario con segnaposto per un girone
 	SEGNAPOSTO = 'SEGNAPOSTO'
-	SEGNAPOSTI = ['A', 'B', 'C', 'D']
+	SEGNAPOSTI = list(string.ascii_uppercase)[:NUM_SQUADRE]
 	CALENDARIO_SEGNAPOSTI = genera_girone_segnaposti(SEGNAPOSTI)
 	CALENDARIO_SEGNAPOSTI_COMPLETO = CALENDARIO_SEGNAPOSTI * NUM_GIRONI
 	
@@ -43,6 +45,9 @@ class Costanti:
 	PTI_P = 1
 	PTI_S = 0
 	PARIMERITO = True
+
+	# numero di processi da lanciare
+	NUM_PROCESSES = 2
 
 	# nome del file .csv di output
 	COLUMNS = ['SQUADRA', 'PUNTI IN CLASSIFICA', 'CALENDARI VINTI']

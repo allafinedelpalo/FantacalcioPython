@@ -140,6 +140,10 @@ class Calendario(object):
 			return 0
 		else:
 			return bisect.bisect_right(Costanti.SOGLIE_PUNTI_GOL,pti)
+
+	def get_squadre(self):
+		"""Restituisce la lista delle squadri partecipanti prendendola dalla prima giornata"""
+		return self.giornate[0].squadre
 	
 	def print_calendario(self):
 		"""Stampa il calendario"""
