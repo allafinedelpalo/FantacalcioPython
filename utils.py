@@ -43,6 +43,7 @@ def esporta_classifica_csv(classifica_calendari):
 		row = squadra + '@' + str(vittorie)
 		df.loc[location] = row.split(Costanti.SEPARATOR)
 		location = location + 1
+	df[Costanti.NUM_CALENDARI_VINTI] = df[Costanti.NUM_CALENDARI_VINTI].astype(int)
 	df = df.sort_values(by=Costanti.ORDER_BY_COLUMNS, ascending=False)
 	df.to_csv(Costanti.FILENAME_OUTPUT, sep=';', index=False)
 	print 'Generato il file {}'.format(Costanti.FILENAME_OUTPUT)

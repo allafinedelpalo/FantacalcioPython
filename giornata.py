@@ -61,6 +61,15 @@ class Giornata(object):
 	def nome_giornata(self, nome_giornata):
 		self.__nome_giornata = nome_giornata
 
+	@property
+	def giocata(self):
+		"""True se le squadre hanno punti nella giornata; False altrimenti"""
+		return self.__giocata
+
+	@giocata.setter
+	def giocata(self, giocata):
+		self.__giocata = giocata
+
 	def __str__(self):
 		"""Restituisce una stringa composta dal nome della giornata
 		e dai punti fatti dalle squadre"""

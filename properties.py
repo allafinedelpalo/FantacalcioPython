@@ -47,5 +47,6 @@ class Costanti:
 	# nome del file .csv di output
 	COLUMNS = ['SQUADRA', 'PUNTI IN CLASSIFICA', 'CALENDARI VINTI']
 	SEPARATOR = '@'
+	NUM_CALENDARI_VINTI = 'CALENDARI VINTI'
 	ORDER_BY_COLUMNS = ['CALENDARI VINTI']
 	FILENAME_OUTPUT = 'ClassificaCalendari.csv'
