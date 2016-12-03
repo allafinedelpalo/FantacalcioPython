@@ -2,7 +2,6 @@ import sys
 import time
 import itertools
 import openpyxl as xl
-import pandas as pd
 import utils
 from multiprocessing import Pool
 from collections import Counter
@@ -18,7 +17,6 @@ def main(filename="Calendario.xlsx"):
     stampa la classifica dei calendari vinti dalle singole squadre, al variare dei punti in classifica"""
     
     starting_time = time.time()
-    squadre = []
     giornate = [Giornata(n) for n in xrange(1, Costanti.NUM_GIORNATE+1)]
     try:        
         calendario_xl = xl.load_workbook(filename)
@@ -34,8 +32,7 @@ def main(filename="Calendario.xlsx"):
         all_permutations = list(itertools.permutations(squadre))
         print '{} processi da lanciare per {} calendari'.format(Costanti.NUM_PROCESSES, len(all_permutations))
         print 'inizializzazione...'        
-        classifica_calendari = dict(zip(squadre, [0]*Costanti.NUM_SQUADRE))
-        calendari = [Calendario(perm,giornate) for perm in all_permutations]
+        calendari = [Calendario(perm, giornate) for perm in all_permutations]
         initialization_time = time.time()
         print 'Tempo impiegato per inizializzazione: {0:.2f} s'.format(initialization_time - starting_time)
         print 'in elaborazione...'
@@ -49,6 +46,7 @@ def main(filename="Calendario.xlsx"):
         print 'Tempo impiegato per elaborazione: {0:.2f} s'.format(ending_time - initialization_time)
         print 'Tempo impiegato totale: {0:.2f} s'.format(time.time() - starting_time)
 
+
 def calcola_classifica_distribuito_map(calendario):
     calendario.calcola_classifica()
     classifica_attuale = dict(zip(calendario.get_squadre(), [0]*Costanti.NUM_SQUADRE))    
@@ -57,11 +55,11 @@ def calcola_classifica_distribuito_map(calendario):
         classifica_attuale[sc] = 1 
     return classifica_attuale
 
+
 def calcola_classifica_distribuito_reduce(classifica_x, classifica_y):
     return dict(Counter(classifica_x) + Counter(classifica_y))
 
 
- 
 if __name__ == '__main__':
     
     main(sys.argv[1])

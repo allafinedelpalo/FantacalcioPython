@@ -4,10 +4,10 @@ from properties import Costanti
 import bisect
 from collections import Counter
 
+
 class Calendario(object):
     """Classe per gestire un calendario
     Comprende il calcolo della classifica per tutte le partite giocate"""
-    
     
     def __init__(self, permutation, giornate):
         self.permutation = permutation
@@ -111,7 +111,7 @@ class Calendario(object):
                 self.calcola_giornata(g)
                 self.classifica = dict(Counter(g.squadre_pti_classifica) + Counter(self.classifica))
         self.pti_primo = max(self.classifica.values())
-        self.squadre_campioni = [k for k,v in self.classifica.iteritems() if v==self.pti_primo]
+        self.squadre_campioni = [k for k, v in self.classifica.iteritems() if v == self.pti_primo]
         self.squadre_campioni.sort()
         
     def calcola_giornata(self, giornata):
@@ -119,8 +119,8 @@ class Calendario(object):
         attribuendo i punti vittoria, pareggio o sconfitta alle squadre"""
         scontri_giornata = self.calendario_custom[giornata.n_giornata-1]
         for indx in xrange(0, len(scontri_giornata), 2):
-            [pti_casa, pti_fuori] = self.calcola_partita(giornata.squadre_pti[scontri_giornata[indx]], 
-                giornata.squadre_pti[scontri_giornata[indx+1]])
+            [pti_casa, pti_fuori] = self.calcola_partita(giornata.squadre_pti[scontri_giornata[indx]],
+                                                         giornata.squadre_pti[scontri_giornata[indx+1]])
             giornata.squadre_pti_classifica[scontri_giornata[indx]] = pti_casa
             giornata.squadre_pti_classifica[scontri_giornata[indx+1]] = pti_fuori     
               
@@ -134,13 +134,6 @@ class Calendario(object):
             return [Costanti.PTI_S, Costanti.PTI_V]
         else:
             return [Costanti.PTI_P, Costanti.PTI_P]        
-            
-    def converti_punti_gol(self, pti):
-        """Restituisce il numero di gol a seconda dei punti e alle soglie gol stabilite"""
-        if pti < Costanti.SOGLIE_PUNTI_GOL[0]:
-            return 0
-        else:
-            return bisect.bisect_right(Costanti.SOGLIE_PUNTI_GOL,pti)
 
     def get_squadre(self):
         """Restituisce la lista delle squadri partecipanti prendendola dalla prima giornata"""
@@ -158,5 +151,13 @@ class Calendario(object):
                 
     def print_classifica(self):
         """Stampa la classifica"""
-        for squadra, punti in sorted(self._classifica.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+        for squadra, punti in sorted(self.classifica.iteritems(), key=lambda (k, v): (v, k), reverse=True):
             print '{} \t\t {}'.format(squadra, str(punti))
+
+    @staticmethod
+    def converti_punti_gol(pti):
+        """Restituisce il numero di gol a seconda dei punti e alle soglie gol stabilite"""
+        if pti < Costanti.SOGLIE_PUNTI_GOL[0]:
+            return 0
+        else:
+            return bisect.bisect_right(Costanti.SOGLIE_PUNTI_GOL, pti)

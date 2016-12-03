@@ -1,10 +1,12 @@
 import string
 
+
 class Costanti:
     """Classe che mantiene tutte le proprieta' invariabili del progetto.
     Le variabili costanti devono essere opportunamente impostate prima di
     eseguire il programma."""
-    
+
+    @staticmethod
     def genera_girone_segnaposti(squadre):
         """Implementazione python dell'algoritmo 'round-robin tournament'
         http://stackoverflow.com/questions/11245746/league-fixture-generator-in-python
@@ -38,7 +40,7 @@ class Costanti:
     CALENDARIO_SEGNAPOSTI_COMPLETO = CALENDARIO_SEGNAPOSTI * NUM_GIRONI
     
     # soglie punti-gol"""
-    SOGLIE_PUNTI_GOL = xrange(66,186,6)
+    SOGLIE_PUNTI_GOL = xrange(66, 186, 6)
     
     # costanti per la classifica
     PTI_V = 3

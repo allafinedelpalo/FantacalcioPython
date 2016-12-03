@@ -1,8 +1,5 @@
-from properties import Costanti
-
 class Giornata(object):
     """Classe per gestire le giornate"""
-    
 
     def __init__(self, n_giornata=1):
         self.squadre = []
@@ -73,5 +70,6 @@ class Giornata(object):
     def __str__(self):
         """Restituisce una stringa composta dal nome della giornata
         e dai punti fatti dalle squadre"""
-        return self.nome_giornata + '\n' + '\n'.join(['{} {}'.format(squadra,str(pti)) 
-            for (squadra, pti) in zip(self.squadre_pti.keys(), self.squadre_pti.values())])
+        return self.nome_giornata + '\n' + '\n'.join(['{} {}'.format(squadra,str(pti))
+                                                      for (squadra, pti) in zip(self.squadre_pti.keys(),
+                                                                                self.squadre_pti.values())])
