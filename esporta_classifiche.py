@@ -30,24 +30,49 @@ def main(filename="Calendario.xlsx"):
         squadre = utils.get_squadre_calendario(calendario_sheet)
         utils.set_giornate_calendario(calendario_sheet, giornate, squadre)
         all_permutations = list(itertools.permutations(squadre))
-        print '{} processi da lanciare per {} calendari'.format(Costanti.NUM_PROCESSES, len(all_permutations))
-        print 'inizializzazione...'        
-        calendari = [Calendario(perm, giornate) for perm in all_permutations]
-        initialization_time = time.time()
-        print 'Tempo impiegato per inizializzazione: {0:.2f} s'.format(initialization_time - starting_time)
-        print 'in elaborazione...'
-        pool = Pool(processes=Costanti.NUM_PROCESSES)
-        print '\tmap...'
-        classifiche = pool.map(calcola_classifica_distribuito_map, calendari)
-        print '\treduce...'
-        classifica_calendari = reduce(calcola_classifica_distribuito_reduce, classifiche)
-        utils.esporta_classifica_csv(classifica_calendari)
-        ending_time = time.time()
-        print 'Tempo impiegato per elaborazione: {0:.2f} s'.format(ending_time - initialization_time)
-        print 'Tempo impiegato totale: {0:.2f} s'.format(time.time() - starting_time)
+        if Costanti.NUM_PROCESSES>1:
+            calcola_classifiche_distribuito(squadre, giornate, all_permutations, starting_time)
+        else:
+            calcola_classifiche_singolo_processo(squadre, giornate, all_permutations, starting_time)
+
+
+def calcola_classifiche_distribuito(squadre, giornate, all_permutations, starting_time):
+    """Calcola la 'classifica delle classifiche' utilizzando un pool di processi"""
+    print '{} processi da lanciare per {} calendari'.format(Costanti.NUM_PROCESSES, len(all_permutations))
+    print 'inizializzazione...'
+    calendari = [Calendario(perm, giornate) for perm in all_permutations]
+    initialization_time = time.time()
+    print 'Tempo impiegato per inizializzazione: {0:.2f} s'.format(initialization_time - starting_time)
+    print 'in elaborazione...'
+    pool = Pool(processes=Costanti.NUM_PROCESSES)
+    print '\tmap...'
+    classifiche = pool.map(calcola_classifica_distribuito_map, calendari)
+    print '\treduce...'
+    classifica_calendari = reduce(calcola_classifica_distribuito_reduce, classifiche)
+    utils.esporta_classifica_csv(classifica_calendari)
+    ending_time = time.time()
+    print 'Tempo impiegato per elaborazione: {0:.2f} s'.format(ending_time - initialization_time)
+    print 'Tempo impiegato totale: {0:.2f} s'.format(time.time() - starting_time)
+
+
+def calcola_classifiche_singolo_processo(squadre, giornate, all_permutations, starting_time):
+    """Calcola la 'classifica delle classifiche' utilizzando un singolo processo"""
+    classifica_calendari = dict(zip(squadre, [0] * Costanti.NUM_SQUADRE))
+    print 'in elaborazione...'
+    for perm in all_permutations:
+        calendario = Calendario(perm, giornate)
+        calendario.calcola_classifica()
+        squadre_campioni = calendario.get_squadra_campione()
+        classifica_attuale = dict(zip(squadre, [0] * Costanti.NUM_SQUADRE))
+        for sc in squadre_campioni:
+            classifica_attuale[sc] = 1
+        classifica_calendari = dict(Counter(classifica_calendari) + Counter(classifica_attuale))
+    utils.esporta_classifica_csv(classifica_calendari)
+    print 'Tempo impiegato: {0:.2f} s'.format(time.time() - starting_time)
 
 
 def calcola_classifica_distribuito_map(calendario):
+    """Metodo utilizzato dai processi per calcolare le classifiche per il loro gruppo di calendari"""
     calendario.calcola_classifica()
     classifica_attuale = dict(zip(calendario.get_squadre(), [0]*Costanti.NUM_SQUADRE))    
     squadre_campioni = calendario.get_squadra_campione()
@@ -57,6 +82,7 @@ def calcola_classifica_distribuito_map(calendario):
 
 
 def calcola_classifica_distribuito_reduce(classifica_x, classifica_y):
+    """Ritorna la 'somma' di due classifiche"""
     return dict(Counter(classifica_x) + Counter(classifica_y))
 
 

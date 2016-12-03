@@ -10,6 +10,14 @@ Il programma prende in ingresso il file excel Calendario.xlsx scaricabile dalla 
 python esporta_classifiche.py <calendario.xlsx>
 
 
+# Proprietà
+
+Nel file properties.py è necessario impostare manualmente:
+* NUM_SQUADRE: numero di squadre partecipanti
+* NUM_GIRONI: numero di gironi che compongo il calendario da calcolare
+* ULTIMA_GIORNATA: ultima giornata da considerare per il calcolo delle classifiche
+* NUM_PROCESSES: numero di processi da utilizzare per il calcolo
+
 Per maggiori informazioni sullo script:
 * Introduzione - http://www.allafinedelpalo.it/statistiche-sui-calendari-del-fantacalcio-python
 * Refactoring - http://www.allafinedelpalo.it/python-programmazione-object-oriented
@@ -18,7 +26,7 @@ Per maggiori informazioni sullo script:
 * Visualizzazione grafica delle statistiche - coming soon...
 
 
-#Modifiche del refactoring
+# Modifiche del refactoring
 
 * esporta_classifiche.py: contiene la funzione principale del progetto;
 * properties.py: contiene le proprietà specifiche del progetto;
