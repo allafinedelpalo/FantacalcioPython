@@ -1,23 +1,23 @@
 import string
 
 
+def genera_girone_segnaposti(squadre):
+    """Implementazione python dell'algoritmo 'round-robin tournament'
+    http://stackoverflow.com/questions/11245746/league-fixture-generator-in-python
+    https://en.wikipedia.org/wiki/Round-robin_tournament"""
+
+    rotation = list(squadre)
+    giornate = []
+    for i in xrange(0, len(squadre)-1):
+        giornate.append(rotation)
+        rotation = [rotation[0]] + [rotation[-1]] + rotation[1:-1]
+    return giornate
+
+
 class Costanti:
     """Classe che mantiene tutte le proprieta' invariabili del progetto.
     Le variabili costanti devono essere opportunamente impostate prima di
     eseguire il programma."""
-
-    @staticmethod
-    def genera_girone_segnaposti(squadre):
-        """Implementazione python dell'algoritmo 'round-robin tournament'
-        http://stackoverflow.com/questions/11245746/league-fixture-generator-in-python
-        https://en.wikipedia.org/wiki/Round-robin_tournament"""
-
-        rotation = list(squadre)
-        giornate = []
-        for i in xrange(0, len(squadre)-1):
-            giornate.append(rotation)
-            rotation = [rotation[0]] + [rotation[-1]] + rotation[1:-1]
-        return giornate
 
     # costanti dipendenti dal fantacampionato
     NUM_SQUADRE = 4
@@ -48,8 +48,8 @@ class Costanti:
     PTI_S = 0
     PARIMERITO = True
 
-    # numero di processi da lanciare
-    NUM_PROCESSES = 2
+    # numero di processi
+    NUM_PROCESSES = 4
 
     # nome del file .csv di output
     COLUMNS = ['SQUADRA', 'PUNTI IN CLASSIFICA', 'CALENDARI VINTI']

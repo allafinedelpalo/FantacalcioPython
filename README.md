@@ -4,6 +4,12 @@ Script per il calcolo del numero di tutte le classifiche generate da ogni possib
 
 Il programma prende in ingresso il file excel Calendario.xlsx scaricabile dalla pagina della propria Lega iscritta al sito leghe.fantagazzetta.com
 
+
+# Usage
+
+python esporta_classifiche.py <calendario.xlsx>
+
+
 Per maggiori informazioni sullo script:
 * Introduzione - http://www.allafinedelpalo.it/statistiche-sui-calendari-del-fantacalcio-python
 * Refactoring - http://www.allafinedelpalo.it/python-programmazione-object-oriented
